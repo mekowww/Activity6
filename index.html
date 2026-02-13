@@ -58,6 +58,7 @@ body::before{
     box-shadow:0 10px 40px rgba(255,105,180,0.4);
     width:90%;
     max-width:500px;
+    
 }
 
 button{
@@ -78,6 +79,9 @@ button{
 #noBtn{
     background:#ff4d6d;
     color:white;
+    position:absolute;  
+    z-index:999;
+
 }
 
 button:hover{
@@ -135,7 +139,7 @@ img{
     <h1>Wina ❤️</h1>
     <h2>Will you be my Valentine?</h2>
     <button id="yesBtn" onclick="yesClicked()">Yes 💖</button>
-    <button id="noBtn" onclick="noClicked()">No 😢</button>
+   <button id="noBtn" onclick="noClicked()">No 😢</button>
 
     <div id="noSection" class="hidden">
         <img id="noGif" src="sad1.gif">
@@ -176,14 +180,35 @@ let noSize = 1;
 let music = document.getElementById("bgMusic");
 
 function noClicked(){
+
     music.play();
+
     if(noClicks < noMessages.length){
+
         document.getElementById("noSection").classList.remove("hidden");
         document.getElementById("noMessage").innerHTML = noMessages[noClicks];
         document.getElementById("noGif").src = noGifs[noClicks];
+
         noClicks++;
-        noSize -= 0.15;
-        if(noSize > 0) document.getElementById("noBtn").style.transform = "scale("+noSize+")";
+
+        noSize -= 0.1;
+        if(noSize > 0.3){
+            document.getElementById("noBtn").style.transform = "scale("+noSize+")";
+        }
+
+let btn = document.getElementById("noBtn");
+let card = document.getElementById("mainCard");
+
+let maxX = card.clientWidth - btn.offsetWidth;
+let maxY = card.clientHeight - btn.offsetHeight;
+
+let randomX = Math.random() * maxX;
+let randomY = Math.random() * maxY;
+
+btn.style.left = randomX + "px";
+btn.style.top = randomY + "px";
+
+
     } else {
         document.getElementById("noBtn").style.display="none";
         showPopup("Okay I will make this easy for you 😌 I left the right answer there hehe 💕");
@@ -232,15 +257,6 @@ function createSticker(){
     setTimeout(()=>{s.remove();},8000);
 }
 setInterval(createSticker,600);
-
-window.addEventListener("load", function(){
-    let music = document.getElementById("bgMusic");
-    music.volume = 0.8;
-    music.play().catch(function(error){
-        console.log("Autoplay blocked by browser.");
-    });
-});
-
 </script>
 
 </body>
