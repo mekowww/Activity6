@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Wina ❤️</title>
+<style>
+
+body{
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+    overflow:hidden;
+    text-align:center;
+    color:rgb(161, 82, 82);
+    background-color:#ffd6e0; 
+    background-image:
+        radial-gradient(circle at 20px 20px, rgba(255,105,180,0.25) 2px, transparent 2px),
+        radial-gradient(circle at 60px 60px, rgba(255,105,180,0.2) 2px, transparent 2px);
+    background-size:80px 80px;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    width:200%;
+    height:200%;
+    top:-50%;
+    left:-50%;
+    background:radial-gradient(circle, rgba(255,182,193,0.3), transparent 70%);
+    animation:moveGlow 12s linear infinite;
+    z-index:-1;
+}
+
+@keyframes moveGlow{
+    0%{transform:rotate(0deg);}
+    100%{transform:rotate(360deg);}
+}
+
+.heart{
+    position:absolute;
+    font-size:20px;
+    animation:float 6s linear infinite;
+}
+@keyframes float{
+    0%{transform:translateY(100vh);opacity:0;}
+    10%{opacity:1;}
+    100%{transform:translateY(-10vh);opacity:0;}
+}
+
+.card{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    background:rgba(255,255,255,0.25);
+    backdrop-filter:blur(15px);
+    padding:40px;
+    border-radius:30px;
+    box-shadow:0 10px 40px rgba(255,105,180,0.4);
+    width:90%;
+    max-width:500px;
+}
+
+button{
+    padding:12px 25px;
+    margin:10px;
+    border:none;
+    border-radius:30px;
+    font-size:18px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+#yesBtn{
+    background:white;
+    color:#ff4d6d;
+}
+
+#noBtn{
+    background:#ff4d6d;
+    color:white;
+}
+
+button:hover{
+    transform:scale(1.1);
+}
+
+.hidden{
+    display:none;
+}
+
+img{
+    width:200px;
+    margin-top:15px;
+    border-radius:20px;
+}
+
+.popup{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    background:white;
+    color:#ff4d6d;
+    padding:20px 30px;
+    border-radius:25px;
+    box-shadow:0 10px 40px rgba(0,0,0,0.3);
+    animation:popFade 0.4s ease;
+    font-size:18px;
+    text-align:center;
+    z-index:1000;
+}
+
+@keyframes popFade{
+    from{
+        opacity:0;
+        transform:translate(-50%,-60%) scale(0.8);
+    }
+    to{
+        opacity:1;
+        transform:translate(-50%,-50%) scale(1);
+    }
+}
+
+
+</style>
+</head>
+
+<body>
+
+<audio id="bgMusic" loop>
+    <source src="iwannabeyours.mp3" type="audio/mpeg">
+</audio>
+
+<div class="card" id="mainCard">
+    <h1>Wina ❤️</h1>
+    <h2>Will you be my Valentine?</h2>
+    <button id="yesBtn" onclick="yesClicked()">Yes 💖</button>
+    <button id="noBtn" onclick="noClicked()">No 😢</button>
+
+    <div id="noSection" class="hidden">
+        <img id="noGif" src="sad1.gif">
+        <p id="noMessage"></p>
+    </div>
+
+    <div id="yesSection" class="hidden">
+        <img src="happycat.gif">
+    </div>
+
+    <div id="finalMessage" class="hidden">
+        <h2>💌</h2>
+        <button onclick="showLove()">Open Message</button>
+        <p id="loveText" style="opacity:0; transition:1.5s;">
+            I’m so lucky to have met you, Wina.  
+            You made my life brighter in ways I never expected.  
+            I’m looking forward to the future with you —  
+            all the memories, laughs, dreams, and everything we’ll build together.  
+            I choose you today and always. ❤️
+        </p>
+    </div>
+</div>
+
+<script>
+let noMessages = [
+    "Why did you click no? 🥺 I will ask again.",
+    "Why still no? 😢",
+    "Okay now it hurts, why would you pick no? 💔",
+    "Is there something wrong with me? Why pick no huhu 😭",
+    "I'm going to cry now if you pick no again 😭"
+];
+
+let noGifs = ["sad1.gif","sad2.gif","sad3.gif","sad4.gif","sad5.gif"];
+
+let noClicks = 0;
+let noSize = 1;
+
+let music = document.getElementById("bgMusic");
+
+function noClicked(){
+    music.play();
+    if(noClicks < noMessages.length){
+        document.getElementById("noSection").classList.remove("hidden");
+        document.getElementById("noMessage").innerHTML = noMessages[noClicks];
+        document.getElementById("noGif").src = noGifs[noClicks];
+        noClicks++;
+        noSize -= 0.15;
+        if(noSize > 0) document.getElementById("noBtn").style.transform = "scale("+noSize+")";
+    } else {
+        document.getElementById("noBtn").style.display="none";
+        showPopup("Okay I will make this easy for you 😌 I left the right answer there hehe 💕");
+    }
+}
+
+function yesClicked(){
+    music.play();
+    showPopup("Yeyyy! I knew you'd click yes 😸💖");
+    document.getElementById("noSection").classList.add("hidden");
+    document.getElementById("finalMessage").classList.remove("hidden");
+    document.getElementById("yesSection").classList.remove("hidden");
+}
+
+function showLove(){
+    document.getElementById("loveText").style.opacity="1";
+}
+
+function showPopup(text){
+    let pop=document.createElement("div");
+    pop.className="popup";
+    pop.innerHTML=text;
+    document.body.appendChild(pop);
+    setTimeout(()=>{pop.remove();},3000);
+}
+
+function createHeart(){
+    const heart=document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML="❤️";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.animationDuration=(Math.random()*3+3)+"s";
+    document.body.appendChild(heart);
+    setTimeout(()=>{heart.remove();},6000);
+}
+setInterval(createHeart,400);
+
+let stickers = ["sticker1.png","sticker2.png","sticker3.png"];
+function createSticker(){
+    const s = document.createElement("div");
+    s.classList.add("heart");
+    s.innerHTML = "<img src='"+stickers[Math.floor(Math.random()*stickers.length)]+"' style='width:40px'>";
+    s.style.left=Math.random()*100+"vw";
+    s.style.animationDuration=(Math.random()*5+3)+"s";
+    document.body.appendChild(s);
+    setTimeout(()=>{s.remove();},8000);
+}
+setInterval(createSticker,600);
+
+window.addEventListener("load", function(){
+    let music = document.getElementById("bgMusic");
+    music.volume = 0.8;
+    music.play().catch(function(error){
+        console.log("Autoplay blocked by browser.");
+    });
+});
+
+</script>
+
+</body>
+</html>
